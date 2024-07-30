@@ -1,0 +1,46 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply m-0 p-0 box-border list-none no-underline;
+}
+
+body {
+  @apply w-[100vw] h-[100vh] bg-backgrounds-bg-color;
+}
+
+@layer components {
+
+  .fontMain{
+    @apply font-kumbh text-[100px] font-bold 
+    text-textColors-gray tracking-[-5px] whitespace-nowrap;
+  }
+
+  .btnDef {
+    @apply font-kumbh text-[14px] font-bold text-textColors-gray opacity-40 whitespace-nowrap;
+  }
+
+  .btn {
+    @apply bg-modeColors-color1 pt-[19px] pb-[15px] 
+    px-[25px] rounded-[26.5px] font-kumbh text-[14px] 
+    font-bold text-textColors-darkGray whitespace-nowrap;
+  }
+
+  .center{
+    @apply flex flex-col items-center justify-center;
+  }
+
+  .oval {
+    @apply w-[410px] h-[410px] p-[22px] rounded-[50%] shadow-shadow bg-backgrounds-ovalGradient bg-no-repeat ;
+  }
+  .oval2{
+    @apply w-[366px] h-[366px] p-[13.5px] rounded-[50%] bg-backgrounds-oval-bg ;
+  }
+
+  .circle{
+    @apply w-[339px] h-[339px]  rounded-[50%]
+  }
+}
+
