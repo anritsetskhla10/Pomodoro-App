@@ -53,10 +53,8 @@ function App() {
           </div>
         </div>
       </div>
-      <div>
         <img src="/images/icon-settings.svg" alt="settings icon" />
         <Settings/>
-      </div>
     </div>
   );
 }

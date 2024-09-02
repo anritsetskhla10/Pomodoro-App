@@ -42,5 +42,10 @@ body {
   .circle{
     @apply w-[339px] h-[339px]  rounded-[50%]
   }
+
+  .FontBtnDef{
+    @apply w-10 h-10 rounded-[50%] bg-[#eff1fa] text-[15px] font-normal opacity-70
+  }
+
 }
 
