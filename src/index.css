@@ -44,7 +44,7 @@ body {
   }
 
   .FontBtnDef{
-    @apply w-10 h-10 rounded-[50%] bg-[#eff1fa] text-[15px] font-normal opacity-70
+    @apply w-10 h-10 rounded-[50%] bg-[#eff1fa] text-[15px] font-normal focus:bg-black focus:text-white;
   }
 
 }

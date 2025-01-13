@@ -3,9 +3,12 @@ import Settings from './components/Settings';
 
 function App() {
 
-  const totalDuration = 10; 
-  const [time, setTime] = useState(totalDuration);
   const [isPaused, setIsPaused] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [pomodoro, setPomodoro] = useState(10);
+  const [shortBreak, setShortBreak] = useState(5);
+  const [longBreak, setLongBreak] = useState(15);
+  const [time, setTime] = useState(pomodoro);
   
   useEffect(() => {
     let interval: number;
@@ -24,7 +27,7 @@ function App() {
     setIsPaused((prevState) => !prevState);
   };
   
-  const strokeDashoffset = (283 - ((totalDuration - time) / totalDuration) * 283).toFixed(2);
+  const strokeDashoffset = (283 - ((pomodoro - time) / pomodoro) * 283).toFixed(2);
   
   return (
     <div className="flex flex-col items-center pt-[48px] pb-[56px]">
@@ -32,17 +35,27 @@ function App() {
         <img src="/images/logo.svg" alt="logo" />
       </div>
       <div className="w-[373px] h-[63px] mb-[47px] px-[7px] py-[8px] rounded-[31.5px] bg-[#161932] flex items-center justify-between z-20">
-        <button className="btn">pomodoro</button>
-        <button className="btnDef">short break</button>
-        <button className="btnDef mr-[25px]">long break</button>
+        <button className="btn" onClick={() => setTime(shortBreak)}>pomodoro</button>
+        <button className="btnDef" onClick={() => setTime(shortBreak)}>short break</button>
+        <button className="btnDef mr-[25px]" onClick={() => setTime(longBreak)}>long break</button>
       </div>
       <div className="oval mb-[63px]">
         <div className="oval2">
           <div className="circle center relative" onClick={togglePause}>
             <svg className="absolute w-full h-full origin-center -rotate-90" viewBox="0 0 100 100" >
-              <circle className="text-transparent" strokeWidth="5" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50"/>
-              <circle className="text-modeColors-color1" strokeWidth="5" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" 
-              strokeDasharray="283" strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
+              <circle className="text-transparent" strokeWidth="5" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
+              <circle
+                className="text-modeColors-color1"
+                strokeWidth="5"
+                stroke="currentColor"
+                fill="transparent"
+                r="45"
+                cx="50"
+                cy="50"
+                strokeDasharray="283"
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+              />
             </svg>
             <h1 className="fontMain z-10">
               {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
@@ -53,8 +66,12 @@ function App() {
           </div>
         </div>
       </div>
-        <img src="/images/icon-settings.svg" alt="settings icon" />
-        <Settings/>
+      <img
+        src="/images/icon-settings.svg"
+        alt="settings icon"
+        onClick={() => setIsSettingsOpen(!isSettingsOpen)} 
+      />
+      {isSettingsOpen && <Settings setPomodoro={setPomodoro} setShortBreak={setShortBreak} setLongBreak={setLongBreak} />} 
     </div>
   );
 }
