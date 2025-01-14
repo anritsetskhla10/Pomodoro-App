@@ -23,7 +23,7 @@ function Settings({ setShortBreak, setLongBreak, setPomodoro }: SettingsProps) {
   };
 
   return (
-    <div className=" bg-white pt-[34px]  rounded-3xl absolute z-50 top-[155px] ">
+    <div className=" bg-white pt-[34px]  rounded-3xl absolute z-50 top-[155px] flex flex-col">
         <h2 className="text-[28px] font-bold text-[#161932] mb-[31px] px-[40px]">Settings</h2>
         <hr className="h-[1px] w-full bg-[#e3e1e1]"/>
         <h4 className="text-[13px] font-bold text-[#161932] mt-[28px] mb-[31px] px-[40px] tracking-[5px]">TIME (MINUTES)</h4>
