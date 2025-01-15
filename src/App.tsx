@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Settings from './components/Settings';
+import { modeButtons } from './constants/constant';
 
 function App() {
   const [isPaused, setIsPaused] = useState(true);
@@ -64,15 +65,15 @@ function App() {
         <img src="/images/logo.svg" alt="logo" />
       </div>
       <div className="w-[373px] h-[63px] mb-[47px] px-[7px] py-[8px] rounded-[31.5px] bg-[#161932] flex items-center justify-between z-20">
-        <button className="btn" onClick={() => handleModeChange('pomodoro')}>
-          Pomodoro
-        </button>
-        <button className="btnDef" onClick={() => handleModeChange('shortBreak')}>
-          Short Break
-        </button>
-        <button className="btnDef mr-[25px]" onClick={() => handleModeChange('longBreak')}>
-          Long Break
-        </button>
+        {modeButtons.map(({ mode, text }) => (
+          <button
+            key={mode}
+            className={currentMode === mode ? 'btn' : 'btnDef'}
+            onClick={() => handleModeChange(mode)}
+          >
+            {text}
+          </button>
+        ))}
       </div>
       <div className="oval mb-[63px]">
         <div className="oval2">

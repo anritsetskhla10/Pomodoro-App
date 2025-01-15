@@ -1,8 +1,8 @@
-/* src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Reset */
 * {
   @apply m-0 p-0 box-border list-none no-underline;
 }
@@ -11,41 +11,66 @@ body {
   @apply w-[100vw] h-[100vh] bg-backgrounds-bg-color;
 }
 
+/* Tailwind Utilities */
 @layer components {
-
-  .fontMain{
-    @apply font-kumbh text-[100px] font-bold 
-    text-textColors-gray tracking-[-5px] whitespace-nowrap;
+  .fontMain {
+    @apply font-kumbh text-[100px] font-bold text-textColors-gray tracking-[-5px] whitespace-nowrap;
   }
 
   .btnDef {
-    @apply font-kumbh text-[14px] font-bold text-textColors-gray opacity-40 whitespace-nowrap;
+    @apply font-kumbh text-[14px] font-bold text-textColors-gray opacity-40 whitespace-nowrap px-[25px];
   }
 
   .btn {
-    @apply bg-modeColors-color1 pt-[19px] pb-[15px] 
-    px-[25px] rounded-[26.5px] font-kumbh text-[14px] 
-    font-bold text-textColors-darkGray whitespace-nowrap;
+    @apply bg-modeColors-color1 pt-[19px] pb-[15px] px-[25px] rounded-[26.5px] font-kumbh text-[14px] font-bold text-textColors-darkGray whitespace-nowrap;
   }
 
-  .center{
+  .center {
     @apply flex flex-col items-center justify-center;
   }
 
   .oval {
-    @apply w-[410px] h-[410px] p-[22px] rounded-[50%] shadow-shadow bg-backgrounds-ovalGradient bg-no-repeat ;
-  }
-  .oval2{
-    @apply w-[366px] h-[366px] p-[13.5px] rounded-[50%] bg-backgrounds-oval-bg ;
+    @apply w-[410px] h-[410px] p-[22px] rounded-[50%] shadow-shadow bg-backgrounds-ovalGradient bg-no-repeat;
   }
 
-  .circle{
-    @apply w-[339px] h-[339px]  rounded-[50%]
+  .oval2 {
+    @apply w-[366px] h-[366px] p-[13.5px] rounded-[50%] bg-backgrounds-oval-bg;
   }
 
-  .FontBtnDef{
+  .circle {
+    @apply w-[339px] h-[339px] rounded-[50%];
+  }
+
+  .FontBtnDef {
     @apply w-10 h-10 rounded-[50%] bg-[#eff1fa] text-[15px] font-normal focus:bg-black focus:text-white;
   }
 
-}
+  /* Ensure InputNumber handlers are always visible */
+  .ant-input-number-handler-wrap {
+    opacity: 1 !important;
+  }
 
+  .ant-input-number-handler {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ant-input-number-handler-up,
+  .ant-input-number-handler-down {
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    cursor: pointer;
+  }
+
+  .ant-input-number-handler:hover {
+    background: #d9d9d9;
+  }
+
+  .ant-input-number:hover .ant-input-number-handler-wrap {
+    opacity: 1;
+  }
+}

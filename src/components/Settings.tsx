@@ -10,16 +10,16 @@ type SettingsProps = {
 
 function Settings({ setShortBreak, setLongBreak, setPomodoro }: SettingsProps) {
   
-  const handlePomodoroChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPomodoro(Number(event.target.value));
+  const handlePomodoroChange = (value: number | null) => {
+    if (value !== null) setPomodoro(value * 60); 
   };
 
-  const handleShortBreakChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setShortBreak(Number(event.target.value));
+  const handleShortBreakChange = (value: number | null) => {
+    if (value !== null) setShortBreak(value * 60);
   };
 
-  const handleLongBreakChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLongBreak(Number(event.target.value));
+  const handleLongBreakChange = (value: number | null) => {
+    if (value !== null) setLongBreak(value * 60);
   };
 
   return (
@@ -30,7 +30,7 @@ function Settings({ setShortBreak, setLongBreak, setPomodoro }: SettingsProps) {
         <div className="flex gap-5 px-10 mb-6">
           <Label>
               <span className="opacity-40">Pomodoro</span>
-              <Input onChange={handlePomodoroChange}></Input>
+              <Input onChange={handlePomodoroChange} />;
           </Label>
           <Label>
               <span className="opacity-40">short break</span>
