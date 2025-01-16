@@ -1,11 +1,16 @@
 
+type ColorBtnProps = {
+  color: string;
+  onClick?: () => void;
+};
 
-function ColorBtn() {
+function ColorBtn({ color, onClick }: ColorBtnProps) {
   return (
-    <button className="w-10 h-10 rounded-[50%] bg-modeColors-color1">
-      
-    </button>
-  )
+    <button
+      className={`w-10 h-10 rounded-[50%] ${color}`}
+      onClick={onClick}
+    />
+  );
 }
 
-export default ColorBtn
+export default ColorBtn;
