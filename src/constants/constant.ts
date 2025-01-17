@@ -8,7 +8,7 @@ export const modeButtons: { mode: 'pomodoro' | 'shortBreak' | 'longBreak'; text:
     { mode: 'longBreak', text: 'Long Break' },
   
   ];
-
+  
 export const modeColors = {
   color1: "bg-modeColors-color1",
   color2: "bg-modeColors-color2",
@@ -20,3 +20,4 @@ export const fonts = [
   { label: "Aa", class: "font-roboto" },
   { label: "Aa", class: "font-space" },
 ];
+
