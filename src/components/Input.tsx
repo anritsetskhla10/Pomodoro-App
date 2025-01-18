@@ -2,8 +2,11 @@ import { InputNumber } from 'antd';
 import '../index.css';
 
 type InputProps = {
+  value: number;
   onChange: (value: number | null) => void;
+
 };
+
 
 const Input = ({ onChange }: InputProps) => (
   <InputNumber

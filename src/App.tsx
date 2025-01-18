@@ -5,9 +5,9 @@ import { modeButtons } from './constants/constant';
 function App() {
   const [isPaused, setIsPaused] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [pomodoro, setPomodoro] = useState(0);
-  const [shortBreak, setShortBreak] = useState(5 * 60); 
-  const [longBreak, setLongBreak] = useState(15 * 60); 
+  const [pomodoro, setPomodoro] = useState(1500); // Default 25 minutes in seconds
+  const [shortBreak, setShortBreak] = useState(300); // Default 5 minutes in seconds
+  const [longBreak, setLongBreak] = useState(900); // Default 15 minutes in seconds
   const [currentMode, setCurrentMode] = useState<'pomodoro' | 'shortBreak' | 'longBreak'>('pomodoro');
   const [time, setTime] = useState(pomodoro);
   const [savedTimes, setSavedTimes] = useState({
@@ -15,7 +15,7 @@ function App() {
     shortBreak,
     longBreak,
   });
-  const [selectedColor, setSelectedColor] = useState<string>("bg-modeColors-color1");
+  const [selectedColor, setSelectedColor] = useState<string>('bg-modeColors-color1');
 
   // Timer effect
   useEffect(() => {
@@ -29,44 +29,49 @@ function App() {
   }, [isPaused]);
 
   useEffect(() => {
+    setTime(savedTimes[currentMode]); // Sync time with savedTimes on mode change
+    setIsPaused(true); // Pause the timer on mode change
+  }, [currentMode, savedTimes]);
+
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+
+  const togglePause = () => {
     if (!isPaused) {
       setSavedTimes((prev) => ({
         ...prev,
         [currentMode]: time,
       }));
     }
-    setTime(savedTimes[currentMode]);
-
-    setIsPaused(true);
-  }, [currentMode]);
-
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-
-  const togglePause = () => {
     setIsPaused((prevState) => !prevState);
   };
 
   const handleModeChange = (mode: 'pomodoro' | 'shortBreak' | 'longBreak') => {
+    setSavedTimes((prev) => ({
+      ...prev,
+      [currentMode]: time,
+    }));
     setCurrentMode(mode);
   };
 
-  const totalDuration =
-    currentMode === 'pomodoro' ? pomodoro : currentMode === 'shortBreak' ? shortBreak : longBreak;
+  const totalDuration = savedTimes[currentMode];
+  const strokeDashoffset = totalDuration
+    ? (283 - ((totalDuration - time) / totalDuration) * 283).toFixed(2)
+    : 283;
 
-  const strokeDashoffset = (283 - ((totalDuration - time) / totalDuration) * 283).toFixed(2);
-  console.log(strokeDashoffset);
   return (
     <div className="flex flex-col items-center pt-[48px] pb-[56px]">
       <div className="w-[156px] h-[32px] mb-[56px] cursor-pointer">
         <img src="/images/logo.svg" alt="logo" />
       </div>
-      <div className="w-[373px] h-[63px] mb-[47px] px-[7px] py-[8px] rounded-[31.5px] 
-      bg-[#161932] flex items-center justify-between z-20">
+      <div
+        className="w-[373px] h-[63px] mb-[47px] px-[7px] py-[8px] rounded-[31.5px] 
+        bg-[#161932] flex items-center justify-between z-20"
+      >
         {modeButtons.map(({ mode, text }) => (
           <button
             key={mode}
-            className={` ${currentMode === mode ? `btn ${selectedColor}` : 'btnDef'} `}
+            className={`${currentMode === mode ? `btn ${selectedColor}` : 'btnDef'}`}
             onClick={() => handleModeChange(mode)}
           >
             {text}
@@ -77,7 +82,15 @@ function App() {
         <div className="oval2">
           <div className="circle center relative" onClick={togglePause}>
             <svg className="absolute w-full h-full origin-center -rotate-90" viewBox="0 0 100 100">
-              <circle className="text-transparent" strokeWidth="5" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
+              <circle
+                className="text-transparent"
+                strokeWidth="5"
+                stroke="currentColor"
+                fill="transparent"
+                r="45"
+                cx="50"
+                cy="50"
+              />
               <circle
                 className={`${
                   selectedColor === 'bg-modeColors-color1'
@@ -86,21 +99,23 @@ function App() {
                     ? 'text-modeColors-color2'
                     : 'text-modeColors-color3'
                 }`}
-              strokeWidth="5"
-              stroke="currentColor"
-              fill="transparent"
-              r="45"
-              cx="50"
-              cy="50"
-              strokeDasharray="283"
-              strokeDashoffset={strokeDashoffset}
-              strokeLinecap="round"
-            />
+                strokeWidth="5"
+                stroke="currentColor"
+                fill="transparent"
+                r="45"
+                cx="50"
+                cy="50"
+                strokeDasharray="283"
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+              />
             </svg>
             <h1 className="fontMain z-10">
               {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
             </h1>
-            <p className="fontMain text-[16px] tracking-[15px] z-10">{isPaused ? 'START' : 'PAUSE'}</p>
+            <p className="fontMain text-[16px] tracking-[15px] z-10">
+              {isPaused ? 'START' : 'PAUSE'}
+            </p>
           </div>
         </div>
       </div>
@@ -110,13 +125,24 @@ function App() {
         onClick={() => setIsSettingsOpen(!isSettingsOpen)}
       />
       {isSettingsOpen && (
-        <Settings 
-          setPomodoro={setPomodoro} 
-          setShortBreak={setShortBreak} 
+        <Settings
+          setPomodoro={setPomodoro}
+          setShortBreak={setShortBreak}
           setLongBreak={setLongBreak}
           setSelectedColor={setSelectedColor}
           selectedColor={selectedColor}
-          setIsSettingsOpen={setIsSettingsOpen} />
+          setIsSettingsOpen={setIsSettingsOpen}
+          resetTimer={() => {
+            const newSavedTimes = {
+              pomodoro,
+              shortBreak,
+              longBreak,
+            };
+            setSavedTimes(newSavedTimes);
+            setTime(newSavedTimes[currentMode]);
+            setIsPaused(true); // Ensure the timer is paused after resetting
+          }}
+        />
       )}
     </div>
   );

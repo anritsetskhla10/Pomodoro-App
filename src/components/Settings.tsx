@@ -11,20 +11,47 @@ type SettingsProps = {
   setSelectedColor: (color: string) => void;
   selectedColor: string;
   setIsSettingsOpen: (value: boolean) => void;
+  resetTimer: () => void; // New prop to reset the timer
 };
 
-function Settings({ setShortBreak, setLongBreak, setPomodoro, setSelectedColor , selectedColor, setIsSettingsOpen}: SettingsProps) {
+function Settings({
+  setShortBreak,
+  setLongBreak,
+  setPomodoro,
+  setSelectedColor,
+  selectedColor,
+  setIsSettingsOpen,
+  resetTimer,
+}: SettingsProps) {
   const [selectedFont, setSelectedFont] = useState("font-kumbh");
+  const [timeValues, setTimeValues] = useState({
+    pomodoro: 25,
+    shortBreak: 5,
+    longBreak: 15,
+  });
 
-  const handleTimeChange = (setter: (value: number) => void) => (value: number | null) => {
-    if (value !== null) setter(value * 60);
+  const timeSetters = {
+    pomodoro: setPomodoro,
+    shortBreak: setShortBreak,
+    longBreak: setLongBreak,
   };
 
-  const fields = [
-    { label: "Pomodoro", onChange: handleTimeChange(setPomodoro) },
-    { label: "Short Break", onChange: handleTimeChange(setShortBreak) },
-    { label: "Long Break", onChange: handleTimeChange(setLongBreak) },
-  ];
+  const handleInputChange = (mode: keyof typeof timeValues) => (value: number | null) => {
+    if (value !== null) {
+      setTimeValues((prev) => ({
+        ...prev,
+        [mode]: value,
+      }));
+    }
+  };
+
+  const handleApply = () => {
+    Object.entries(timeValues).forEach(([key, value]) => {
+      timeSetters[key as keyof typeof timeSetters](value * 60);
+    });
+    setIsSettingsOpen(false);
+    resetTimer();
+  };
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
@@ -40,10 +67,10 @@ function Settings({ setShortBreak, setLongBreak, setPomodoro, setSelectedColor ,
         TIME (MINUTES)
       </h4>
       <div className="flex justify-between px-10 mb-6">
-        {fields.map((field, index) => (
-          <Label key={index}>
-            <span className="opacity-40">{field.label}</span>
-            <Input onChange={field.onChange} />
+        {Object.entries(timeValues).map(([key, value]) => (
+          <Label key={key}>
+            <span className="opacity-40">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+            <Input value={value} onChange={handleInputChange(key as keyof typeof timeValues)} />
           </Label>
         ))}
       </div>
@@ -79,7 +106,7 @@ function Settings({ setShortBreak, setLongBreak, setPomodoro, setSelectedColor ,
       </div>
       <button
         className={`self-center rounded-[26.5px] ${selectedColor} px-[47px] py-4 mb-[-28px] font-bold text-[16px] text-[#fff]`}
-        onClick={() => setIsSettingsOpen(false)}
+        onClick={handleApply}
       >
         Apply
       </button>
