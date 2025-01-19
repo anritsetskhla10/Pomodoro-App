@@ -1,17 +1,21 @@
 import { InputNumber } from 'antd';
 import '../index.css';
 
+
 type InputProps = {
+
   value: number;
+
   onChange: (value: number | null) => void;
 
 };
 
 
-const Input = ({ onChange }: InputProps) => (
+const Input = ({ value, onChange }: InputProps) => (
   <InputNumber
     min={0}
-    onChange={onChange}
+    value={value === 0 ? null : value} 
+    onChange={(value) => onChange(value)}
     changeOnWheel
     className="custom-input-number"
   />

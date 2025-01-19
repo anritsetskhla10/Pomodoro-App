@@ -1,21 +1,24 @@
-import { useState, useEffect } from 'react';
-import Settings from './components/Settings';
-import { modeButtons } from './constants/constant';
+import { useState, useEffect } from "react";
+import Settings from "./components/Settings";
+import { modeButtons } from "./constants/constant";
 
 function App() {
   const [isPaused, setIsPaused] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [pomodoro, setPomodoro] = useState(1500); // Default 25 minutes in seconds
-  const [shortBreak, setShortBreak] = useState(300); // Default 5 minutes in seconds
-  const [longBreak, setLongBreak] = useState(900); // Default 15 minutes in seconds
-  const [currentMode, setCurrentMode] = useState<'pomodoro' | 'shortBreak' | 'longBreak'>('pomodoro');
+  const [pomodoro, setPomodoro] = useState(1500); // 25 minutes
+  const [shortBreak, setShortBreak] = useState(300); // 5 minutes
+  const [longBreak, setLongBreak] = useState(900); // 15 minutes
+  const [currentMode, setCurrentMode] = useState<"pomodoro" | "shortBreak" | "longBreak">(
+    "pomodoro"
+  );
   const [time, setTime] = useState(pomodoro);
   const [savedTimes, setSavedTimes] = useState({
     pomodoro,
     shortBreak,
     longBreak,
   });
-  const [selectedColor, setSelectedColor] = useState<string>('bg-modeColors-color1');
+  const [selectedColor, setSelectedColor] = useState<string>("bg-modeColors-color1");
+  const [selectedFont, setSelectedFont] = useState("font-kumbh");
 
   // Timer effect
   useEffect(() => {
@@ -28,9 +31,10 @@ function App() {
     return () => clearInterval(interval);
   }, [isPaused]);
 
+  // Update the timer when the mode changes
   useEffect(() => {
-    setTime(savedTimes[currentMode]); // Sync time with savedTimes on mode change
-    setIsPaused(true); // Pause the timer on mode change
+    setTime(savedTimes[currentMode]); 
+    setIsPaused(true); 
   }, [currentMode, savedTimes]);
 
   const minutes = Math.floor(time / 60);
@@ -46,12 +50,22 @@ function App() {
     setIsPaused((prevState) => !prevState);
   };
 
-  const handleModeChange = (mode: 'pomodoro' | 'shortBreak' | 'longBreak') => {
+  const handleModeChange = (mode: "pomodoro" | "shortBreak" | "longBreak") => {
     setSavedTimes((prev) => ({
       ...prev,
       [currentMode]: time,
     }));
     setCurrentMode(mode);
+  };
+
+  const resetTimer = () => {
+    setSavedTimes({
+      pomodoro,
+      shortBreak,
+      longBreak,
+    });
+    setTime(savedTimes[currentMode]); 
+    setIsPaused(true); 
   };
 
   const totalDuration = savedTimes[currentMode];
@@ -65,13 +79,13 @@ function App() {
         <img src="/images/logo.svg" alt="logo" />
       </div>
       <div
-        className="w-[373px] h-[63px] mb-[47px] px-[7px] py-[8px] rounded-[31.5px] 
+        className="max-w-[410px] h-[63px] mb-[47px] px-[7px] py-[8px] rounded-[31.5px] 
         bg-[#161932] flex items-center justify-between z-20"
       >
         {modeButtons.map(({ mode, text }) => (
           <button
             key={mode}
-            className={`${currentMode === mode ? `btn ${selectedColor}` : 'btnDef'}`}
+            className={`${currentMode === mode ? `btn ${selectedColor} ${selectedFont}` : `btnDef ${selectedFont}`}`}
             onClick={() => handleModeChange(mode)}
           >
             {text}
@@ -93,11 +107,11 @@ function App() {
               />
               <circle
                 className={`${
-                  selectedColor === 'bg-modeColors-color1'
-                    ? 'text-modeColors-color1'
-                    : selectedColor === 'bg-modeColors-color2'
-                    ? 'text-modeColors-color2'
-                    : 'text-modeColors-color3'
+                  selectedColor === "bg-modeColors-color1"
+                    ? "text-modeColors-color1"
+                    : selectedColor === "bg-modeColors-color2"
+                    ? "text-modeColors-color2"
+                    : "text-modeColors-color3"
                 }`}
                 strokeWidth="5"
                 stroke="currentColor"
@@ -110,11 +124,11 @@ function App() {
                 strokeLinecap="round"
               />
             </svg>
-            <h1 className="fontMain z-10">
-              {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+            <h1 className={`${selectedFont} fontMain z-10`}>
+              {minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}
             </h1>
-            <p className="fontMain text-[16px] tracking-[15px] z-10">
-              {isPaused ? 'START' : 'PAUSE'}
+            <p className={`${selectedFont} fontMain text-[16px] tracking-[15px] z-10`}>
+              {isPaused ? "START" : "PAUSE"}
             </p>
           </div>
         </div>
@@ -122,26 +136,23 @@ function App() {
       <img
         src="/images/icon-settings.svg"
         alt="settings icon"
-        onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+        onClick={() => !isSettingsOpen && setIsSettingsOpen(true)}
+        className={`${isSettingsOpen ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
       />
       {isSettingsOpen && (
         <Settings
+          pomodoro={pomodoro}
+          shortBreak={shortBreak}
+          longBreak={longBreak}
           setPomodoro={setPomodoro}
           setShortBreak={setShortBreak}
           setLongBreak={setLongBreak}
           setSelectedColor={setSelectedColor}
           selectedColor={selectedColor}
           setIsSettingsOpen={setIsSettingsOpen}
-          resetTimer={() => {
-            const newSavedTimes = {
-              pomodoro,
-              shortBreak,
-              longBreak,
-            };
-            setSavedTimes(newSavedTimes);
-            setTime(newSavedTimes[currentMode]);
-            setIsPaused(true); // Ensure the timer is paused after resetting
-          }}
+          resetTimer={resetTimer}
+          selectedFont={selectedFont}
+          setSelectedFont={setSelectedFont}
         />
       )}
     </div>
