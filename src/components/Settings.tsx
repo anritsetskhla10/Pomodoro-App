@@ -65,17 +65,19 @@ function Settings({
   };
 
   return (
-    <div className="bg-white pt-[34px] rounded-3xl absolute z-50 top-[155px] flex flex-col">
-      <h2 className={`${selectedFont} text-[28px] font-bold text-[#161932] mb-[31px] px-[40px]`}>
+    <div className="bg-white pt-[34px] max-sm:w-[324px] rounded-3xl absolute z-50 top-[155px] flex flex-col">
+      <h2 className={`${selectedFont} text-[28px] max-sm:text-[20px] font-bold text-[#161932] 
+      mb-[31px] max-sm:mb-4 px-[40px] max-sm:px-4`}>
         Settings
       </h2>
-      <hr className="h-[1px] w-full bg-[#e3e1e1]" />
-      <h4 className={`${selectedFont} text-[13px] font-bold text-[#161932] mt-[28px] mb-[31px] px-[40px] tracking-[5px]`}>
-        TIMER SETTINGS
+      <hr className="h-[1px] w-full max-sm:w-[324px] bg-[#e3e1e1]" />
+      <h4 className={`${selectedFont} text-[13px] max-sm:text-[11px] text-center font-bold text-[#161932] 
+      mt-[28px] mb-[31px] px-[40px] tracking-[5px]`}>
+        TIME ( MINUTES )
       </h4>
-      <div className="flex justify-between px-10 mb-6">
+      <div className="flex justify-between px-10 mb-6 max-sm:flex-col max-sm:gap-2">
         <Label>
-          <span className={`${selectedFont} opacity-40`}>Pomodoro</span>
+          <span className={`${selectedFont} opacity-40 font-bold`}>Pomodoro</span>
           <Input
             value={localPomodoro}
             onChange={handleLocalPomodoro}
@@ -83,7 +85,7 @@ function Settings({
           />
         </Label>
         <Label>
-          <span className={`${selectedFont} opacity-40`}>Short Break</span>
+          <span className={`${selectedFont} opacity-40 font-bold`}>Short Break</span>
           <Input
             value={localShortBreak}
             onChange={handleLocalShortBreak}
@@ -91,7 +93,7 @@ function Settings({
           />
         </Label>
         <Label>
-          <span className={`${selectedFont} opacity-40`}>Long Break</span>
+          <span className={`${selectedFont} opacity-40 font-bold`}>Long Break</span>
           <Input
             value={localLongBreak}
             onChange={handleLocalLongBreak}
@@ -99,10 +101,10 @@ function Settings({
           />
         </Label>
       </div>
-      <hr className="h-[1px] w-[460px] self-center bg-[#e3e1e1]" />
-      <div className="flex justify-between items-center px-10 my-6">
-        <h4 className={`${selectedFont} text-[13px] font-bold text-[#161932] tracking-[5px]`}>FONT</h4>
-        <div className="flex gap-4 mt-4">
+      <hr className="h-[1px] w-[460px] max-sm:w-[324px] self-center bg-[#e3e1e1]" />
+      <div className="flex justify-between items-center px-10 my-6 max-sm:flex-col max-sm:gap-2 max-sm:my-4">
+        <h4 className={`${selectedFont} text-[13px] max-sm:text-[11px] font-bold text-[#161932] tracking-[5px]`}>FONT</h4>
+        <div className="flex gap-4">
           {fonts?.length > 0 &&
             fonts.map((font, index) => (
               <button
@@ -118,9 +120,9 @@ function Settings({
             ))}
         </div>
       </div>
-      <hr className="h-[1px] w-[460px] self-center bg-[#e3e1e1]" />
-      <div className="flex justify-between items-center px-10 my-6">
-        <h4 className={`${selectedFont} text-[13px] font-bold text-[#161932] tracking-[5px]`}>COLOR</h4>
+      <hr className="h-[1px] w-[460px] max-sm:w-[324px] self-center bg-[#e3e1e1]" />
+      <div className="flex justify-between items-center px-10 my-6 max-sm:flex-col max-sm:gap-2 max-sm:my-4">
+        <h4 className={`${selectedFont} text-[13px] max-sm:text-[11px] font-bold text-[#161932] tracking-[5px]`}>COLOR</h4>
         <div className="flex gap-4">
           {Object.keys(modeColors)?.length > 0 &&
             Object.entries(modeColors).map(([key, value]) => (

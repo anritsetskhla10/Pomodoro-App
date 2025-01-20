@@ -4,6 +4,7 @@ import { modeButtons } from "./constants/constant";
 
 function App() {
   const [isPaused, setIsPaused] = useState(true);
+  const [isTimerEnded, setIsTimerEnded] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [pomodoro, setPomodoro] = useState(1500); // 25 minutes
   const [shortBreak, setShortBreak] = useState(300); // 5 minutes
@@ -23,31 +24,42 @@ function App() {
   // Timer effect
   useEffect(() => {
     let interval: number;
-    if (!isPaused) {
+    if (!isPaused && !isTimerEnded) {
       interval = setInterval(() => {
-        setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+        setTime((prevTime) => {
+          if (prevTime > 0) return prevTime - 1;
+          setIsTimerEnded(true); // Mark the timer as ended
+          return 0;
+        });
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, isTimerEnded]);
 
   // Update the timer when the mode changes
   useEffect(() => {
-    setTime(savedTimes[currentMode]); 
-    setIsPaused(true); 
+    setTime(savedTimes[currentMode]);
+    setIsPaused(true);
+    setIsTimerEnded(false);
   }, [currentMode, savedTimes]);
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
 
   const togglePause = () => {
-    if (!isPaused) {
-      setSavedTimes((prev) => ({
-        ...prev,
-        [currentMode]: time,
-      }));
+    if (isTimerEnded) {
+      // Reset the timer when "RESTART" is clicked
+      setTime(savedTimes[currentMode]);
+      setIsTimerEnded(false);
+    } else {
+      if (!isPaused) {
+        setSavedTimes((prev) => ({
+          ...prev,
+          [currentMode]: time,
+        }));
+      }
+      setIsPaused((prevState) => !prevState);
     }
-    setIsPaused((prevState) => !prevState);
   };
 
   const handleModeChange = (mode: "pomodoro" | "shortBreak" | "longBreak") => {
@@ -64,8 +76,9 @@ function App() {
       shortBreak,
       longBreak,
     });
-    setTime(savedTimes[currentMode]); 
-    setIsPaused(true); 
+    setTime(savedTimes[currentMode]);
+    setIsPaused(true);
+    setIsTimerEnded(false);
   };
 
   const totalDuration = savedTimes[currentMode];
@@ -80,7 +93,7 @@ function App() {
       </div>
       <div
         className="max-w-[410px] h-[63px] mb-[47px] px-[7px] py-[8px] rounded-[31.5px] 
-        bg-[#161932] flex items-center justify-between z-20"
+        bg-[#161932] flex items-center justify-between z-20 max-sm:w-[350px]"
       >
         {modeButtons.map(({ mode, text }) => (
           <button
@@ -127,8 +140,8 @@ function App() {
             <h1 className={`${selectedFont} fontMain z-10`}>
               {minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}
             </h1>
-            <p className={`${selectedFont} fontMain text-[16px] tracking-[15px] z-10`}>
-              {isPaused ? "START" : "PAUSE"}
+            <p className={`${selectedFont} fontMain text-[16px] max-sm:text-[14px] max-sm:pl-4 tracking-[15px] z-10`}>
+              {isTimerEnded ? "RESTART" : isPaused ? "START" : "PAUSE"}
             </p>
           </div>
         </div>

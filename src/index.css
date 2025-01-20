@@ -14,15 +14,15 @@ body {
 /* Tailwind Utilities */
 @layer components {
   .fontMain {
-    @apply font-kumbh text-[100px] font-bold text-textColors-gray tracking-[-5px] whitespace-nowrap;
+    @apply font-kumbh text-[100px] max-sm:text-[60px] text-center font-bold text-textColors-gray tracking-[-5px] whitespace-nowrap;
   }
 
   .btnDef {
-    @apply font-kumbh text-[14px] font-bold text-textColors-gray opacity-40 whitespace-nowrap px-[25px];
+    @apply font-kumbh text-[14px] max-sm:text-[12px] font-bold text-textColors-gray opacity-40 whitespace-nowrap px-[25px] max-sm:px-4;
   }
 
   .btn {
-    @apply bg-modeColors-color1 pt-[19px] pb-[15px] px-[25px] rounded-[26.5px] font-kumbh text-[14px] font-bold text-textColors-darkGray whitespace-nowrap;
+    @apply bg-modeColors-color1 pt-[19px] pb-[15px] px-[25px] max-sm:px-4 rounded-[26.5px] font-kumbh text-[14px] max-sm:text-[12px] font-bold text-textColors-darkGray whitespace-nowrap;
   }
 
   .center {
@@ -30,19 +30,19 @@ body {
   }
 
   .oval {
-    @apply w-[410px] h-[410px] p-[22px] rounded-[50%] shadow-shadow bg-backgrounds-ovalGradient bg-no-repeat;
+    @apply w-[410px] h-[410px] max-sm:w-[300px] max-sm:h-[300px] p-[22px] max-sm:p-[16.1px] rounded-[50%] shadow-shadow bg-backgrounds-ovalGradient bg-no-repeat;
   }
 
   .oval2 {
-    @apply w-[366px] h-[366px] p-[13.5px] rounded-[50%] bg-backgrounds-oval-bg;
+    @apply w-[366px] h-[366px] max-sm:w-[267.8px] max-sm:h-[267.8px] p-[13.5px] max-sm:p-[9.9px] rounded-[50%] bg-backgrounds-oval-bg;
   }
 
   .circle {
-    @apply w-[339px] h-[339px] rounded-[50%];
+    @apply w-[339px] h-[339px] max-sm:w-[248px] max-sm:h-[248px] rounded-[50%];
   }
 
   .FontBtnDef {
-    @apply w-10 h-10 rounded-[50%] bg-[#eff1fa] text-[15px] font-normal focus:bg-black focus:text-white;
+    @apply w-10 h-10 rounded-[50%] bg-[#eff1fa] text-[15px] max-sm:text-[13px] font-normal focus:bg-black focus:text-white;
   }
 
   /* Ensure InputNumber handlers are always visible */
